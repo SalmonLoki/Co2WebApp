@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Co2WebApp.Models;
-using Co2WebApp.Services;
 using HidSharp;
 
 namespace co2Device
@@ -14,22 +12,22 @@ namespace co2Device
         
         public void ConnectDevice(Co2DeviceHandler co2DeviceHandler, int vendorId, int productId)
         {
-            _hidDevice = co2DeviceHandler.connectDevice(vendorId, productId);
-            _stream = co2DeviceHandler.openStream(_hidDevice);
+            _hidDevice = co2DeviceHandler.ConnectDevice(vendorId, productId);
+            _stream = co2DeviceHandler.OpenStream(_hidDevice);
 					
             //the device won't send anything before receiving this packet 
             byte[] reportId = { 0x00 };
             
-            byte[] request = reportId.Concat(_key).ToArray();
+            var request = reportId.Concat(_key).ToArray();
 						
-            co2DeviceHandler.sendSetFeatureSetupRequest(_stream, request);
+            co2DeviceHandler.SendSetFeatureSetupRequest(_stream, request);
         }
 
         public void GetResults(Co2DeviceHandler co2DeviceHandler, DataProcessor dataProcessor,
             ref Result co2Result, ref Result temperatureResult)
         {
+            var receivedData = co2DeviceHandler.ReadData(_stream);
             while (true) {
-                byte[] receivedData = co2DeviceHandler.readData(_stream);
                 if (receivedData.Length == 0) {
                     Console.WriteLine("Unable to read data");
                 }
@@ -43,28 +41,28 @@ namespace co2Device
                 }                
                 receivedData = temp;   
 					
-                var data = dataProcessor.decryptData(ref _key, ref receivedData);
-                if (!dataProcessor.checkEndOfMessage(ref data)) {
+                var data = dataProcessor.DecryptData(ref _key, ref receivedData);
+                if (!dataProcessor.CheckEndOfMessage(ref data)) {
                     Console.WriteLine("Unexpected data from device");
                 }
 	               
-                if (!dataProcessor.checkCheckSum(ref data)) {
+                if (!dataProcessor.CheckCheckSum(ref data)) {
                     Console.WriteLine("checksum error");
                 }
 	               
-                var result = dataProcessor.dataProcessing(ref data);
+                var result = dataProcessor.DataProcessing(ref data);
                 if (result != null)
                 {
-                    if (result.type.Equals("Relative Concentration of CO2"))
+                    if (result.Type.Equals("Relative Concentration of CO2"))
                         co2Result = result;
-                    if (result.type.Equals("Ambient Temperature"))
+                    if (result.Type.Equals("Ambient Temperature"))
                         temperatureResult = result;
                 }
 
                 if (co2Result != null & temperatureResult != null)
                     break;
             }				
-            co2DeviceHandler.closeStream(_stream);
+            co2DeviceHandler.CloseStream(_stream);
         }
     }
 }

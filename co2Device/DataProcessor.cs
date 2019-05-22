@@ -1,9 +1,8 @@
 using System;
-using Co2WebApp.Models;
 
-namespace Co2WebApp.Services {
+namespace co2Device {
     public class DataProcessor : IDataProcessor {
-        public int[] decryptData(ref byte[] key, ref byte[] dataBuffer) {
+        public int[] DecryptData(ref byte[] key, ref byte[] dataBuffer) {
             int[] shuffle = { 2, 4, 0, 7, 1, 6, 5, 3 };
 			
             int[] phase1 = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -34,11 +33,11 @@ namespace Co2WebApp.Services {
             return result;    
         }
 
-        public bool checkEndOfMessage(ref int[] data) {
+        public bool CheckEndOfMessage(ref int[] data) {
             return data[4] == 0x0d;
         }
 		
-        public bool checkCheckSum(ref int[] data) {
+        public bool CheckCheckSum(ref int[] data) {
             return ((data[0] + data[1] + data[2]) & 0xff) == data[3];            
         }
 		
@@ -47,22 +46,20 @@ namespace Co2WebApp.Services {
         }
 				
         private string getHeartbeat() {
-            string curTimeLong = DateTime.Now.ToLongTimeString();
+            var curTimeLong = DateTime.Now.ToLongTimeString();
             return curTimeLong;
         }
 
-        public Result dataProcessing(ref int[] data) {
-            int val = (data[1] << 8) | data[2];
+        public Result DataProcessing(ref int[] data) {
+            var val = (data[1] << 8) | data[2];
 			
             switch (data[0]) {
                 case 80: //0x50d		
                     return new Result("Relative Concentration of CO2", val, getHeartbeat());
-                    break;	
-				
+
                 case 66: //0x42d					
                     return new Result("Ambient Temperature", decodeTemperature(val), getHeartbeat());
-                    break;
-                
+
                 default:
                     return null;
             }

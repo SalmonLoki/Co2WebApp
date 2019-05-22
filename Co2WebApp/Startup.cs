@@ -1,5 +1,5 @@
-﻿using Co2WebApp.Middleware;
-using Co2WebApp.Services;
+﻿using co2Device;
+using Co2WebApp.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +25,7 @@ namespace Co2WebApp {
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {            		            
-            app.UseMiddleware<usbConnectedMiddleware>();
+            app.UseMiddleware<UsbConnectedMiddleware>();
          
             app.UseHttpsRedirection();
             app.UseMvc();            

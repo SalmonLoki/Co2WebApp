@@ -1,15 +1,15 @@
 using HidSharp;
 
-namespace Co2WebApp.Services {
+namespace co2Device {
 	public interface ICo2DeviceHandler {
-		HidDevice connectDevice(int vendorId, int productId);
+		HidDevice ConnectDevice(int vendorId, int productId);
 
-		HidStream openStream(HidDevice hidDevice);
+		HidStream OpenStream(HidDevice hidDevice);
 
-		void closeStream(HidStream stream);
+		void CloseStream(HidStream stream);
 
-		void sendSetFeatureSetupRequest(HidStream stream, byte[] buffer);
+		void SendSetFeatureSetupRequest(HidStream stream, byte[] buffer);
 
-		byte[] readData(HidStream stream);
+		byte[] ReadData(HidStream stream);
 	}
 }
