@@ -1,7 +1,7 @@
 using System;
 using Co2WebApp.Models;
 
-namespace Co2WebApp {
+namespace Co2WebApp.Services {
     public class DataProcessor : IDataProcessor {
         public int[] decryptData(ref byte[] key, ref byte[] dataBuffer) {
             int[] shuffle = { 2, 4, 0, 7, 1, 6, 5, 3 };
@@ -56,11 +56,11 @@ namespace Co2WebApp {
 			
             switch (data[0]) {
                 case 80: //0x50d		
-                    return new Result(type: "Relative Concentration of CO2", val, getHeartbeat());
+                    return new Result("Relative Concentration of CO2", val, getHeartbeat());
                     break;	
 				
                 case 66: //0x42d					
-                    return new Result(type: "Ambient Temperature", decodeTemperature(val), getHeartbeat());
+                    return new Result("Ambient Temperature", decodeTemperature(val), getHeartbeat());
                     break;
                 
                 default:

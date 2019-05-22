@@ -1,6 +1,6 @@
 using Co2WebApp.Models;
 
-namespace Co2WebApp {
+namespace Co2WebApp.Services {
 	public interface IDataProcessor {
 		int[] decryptData(ref byte[] key, ref byte[] dataBuffer);
 		

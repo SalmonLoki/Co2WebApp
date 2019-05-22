@@ -1,7 +1,7 @@
 using System;
 using HidSharp;
 
-namespace Co2WebApp {
+namespace Co2WebApp.Services {
 	public class Co2DeviceHandler : ICo2DeviceHandler {
 		public HidDevice connectDevice(int vendorId, int productId) {
 			DeviceList devices = DeviceList.Local;
