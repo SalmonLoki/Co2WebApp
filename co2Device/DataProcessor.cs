@@ -65,7 +65,6 @@ namespace Co2WebApp.Services {
                 
                 default:
                     return null;
-                    break;
             }
         }    
     }

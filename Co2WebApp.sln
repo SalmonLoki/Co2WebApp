@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Co2WebApp", "Co2WebApp\Co2WebApp.csproj", "{04D0A4FF-D291-416E-8812-5045F0CE153B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "co2Device", "co2Device\co2Device.csproj", "{1FBFA586-C336-4D96-8AA9-816EBCD8289F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{04D0A4FF-D291-416E-8812-5045F0CE153B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04D0A4FF-D291-416E-8812-5045F0CE153B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04D0A4FF-D291-416E-8812-5045F0CE153B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FBFA586-C336-4D96-8AA9-816EBCD8289F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FBFA586-C336-4D96-8AA9-816EBCD8289F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FBFA586-C336-4D96-8AA9-816EBCD8289F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FBFA586-C336-4D96-8AA9-816EBCD8289F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
