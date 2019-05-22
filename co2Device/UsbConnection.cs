@@ -8,7 +8,7 @@ namespace co2Device {
         private HidStream _stream;
         private byte[] _key = { 0xc4, 0xc6, 0xc0, 0x92, 0x40, 0x23, 0xdc, 0x96 };
         
-        public void ConnectDevice(Co2DeviceHandler co2DeviceHandler, int vendorId, int productId) {
+        public void ConnectDevice(ICo2DeviceHandler co2DeviceHandler, int vendorId, int productId) {
             _hidDevice = co2DeviceHandler.ConnectDevice(vendorId, productId);
             _stream = co2DeviceHandler.OpenStream(_hidDevice);
 					
@@ -20,7 +20,7 @@ namespace co2Device {
             co2DeviceHandler.SendSetFeatureSetupRequest(_stream, request);
         }
 
-        public void GetResults(Co2DeviceHandler co2DeviceHandler, DataProcessor dataProcessor,
+        public void GetResults(ICo2DeviceHandler co2DeviceHandler, IDataProcessor dataProcessor,
                                ref Result co2Result, ref Result temperatureResult) {
             byte[] receivedData = co2DeviceHandler.ReadData(_stream);
             while (true) {
