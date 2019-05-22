@@ -26,10 +26,9 @@ namespace Co2WebApp.Middleware {
 				if (!_cache.TryGetValue(CacheKeys.Co2Result, out Result co2Result) | !_cache.TryGetValue(CacheKeys.TemperatureResult, out Result temperatureResult)) {
 					
 					var usbConnection = new UsbConnection();
-					usbConnection.ConnectDevice(_co2DeviceHandler, VendorId, ProductId);
-					usbConnection.GetResults(_co2DeviceHandler, _dataProcessor,
-					                         ref co2Result, ref temperatureResult);
-					
+					usbConnection.ConnectDevice(_co2DeviceHandler, _dataProcessor, VendorId, ProductId,
+						ref co2Result, ref temperatureResult);
+
 					//co2Result = new Result("Relative Concentration of CO2", 1000, DateTime.Now.ToLongTimeString());
 					//temperatureResult = new Result("Ambient Temperature", 25, DateTime.Now.ToLongTimeString());
 					
