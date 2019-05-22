@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
-using  co2Device;
+using co2Device;
 
 namespace Co2WebApp.Middleware {
 	public class UsbConnectedMiddleware {
@@ -22,19 +22,17 @@ namespace Co2WebApp.Middleware {
 		}
  
 		public async Task Invoke(HttpContext httpContext) {
-			if (httpContext.Request.Path.Value.ToLower() == "/co2")
-			{
+			if (httpContext.Request.Path.Value.ToLower() == "/co2") {
 				if (!_cache.TryGetValue(CacheKeys.Co2Result, out Result co2Result) | !_cache.TryGetValue(CacheKeys.TemperatureResult, out Result temperatureResult)) {
-
 					var usbConnection = new UsbConnection();
-					usbConnection.ConnectDevice((Co2DeviceHandler) _co2DeviceHandler, VendorId, ProductId);
-					usbConnection.GetResults((Co2DeviceHandler) _co2DeviceHandler, (DataProcessor) _dataProcessor,
-						ref co2Result, ref temperatureResult);
+					usbConnection.ConnectDevice((Co2DeviceHandler)_co2DeviceHandler, VendorId, ProductId);
+					usbConnection.GetResults((Co2DeviceHandler)_co2DeviceHandler, (DataProcessor)_dataProcessor,
+					                         ref co2Result, ref temperatureResult);
 					
 					//co2Result = new Result("Relative Concentration of CO2", 1000, DateTime.Now.ToLongTimeString());
 					//temperatureResult = new Result("Ambient Temperature", 25, DateTime.Now.ToLongTimeString());
 					
-					var cacheEntryOptions = new MemoryCacheEntryOptions()
+					MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
 						.SetSlidingExpiration(TimeSpan.FromSeconds(1));
 					_cache.Set(CacheKeys.Co2Result, co2Result, cacheEntryOptions);
 					_cache.Set(CacheKeys.TemperatureResult, temperatureResult, cacheEntryOptions);
