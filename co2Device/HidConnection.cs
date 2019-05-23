@@ -20,16 +20,24 @@ namespace co2Device {
 						
             co2DeviceHandler.SendSetFeatureSetupRequest(_stream, request);
             
+            var attempts = 0;
+            var exceptionMessage = "no attempts";
+            
             while (true) {
+                attempts++;
+                if (attempts == 10) {
+                    throw new Exception(exceptionMessage);
+                }
+                
                 byte[] receivedData = co2DeviceHandler.ReadData(_stream);
 
                 if (receivedData.Length == 0) {
-                    Console.WriteLine("Unable to read data");
+                    exceptionMessage = "Unable to read data";
                     continue;
                 }
                 
                 if (receivedData.Length != 9 && receivedData.Length != 8) {
-                    Console.WriteLine("transferred amount of bytes != expected bytes amount: " + receivedData.Length);
+                    exceptionMessage = "transferred amount of bytes != expected bytes amount: " + receivedData.Length;
                     continue;
                 }
 
@@ -44,12 +52,12 @@ namespace co2Device {
 
                 int[] data = dataProcessor.DecryptData(ref _key, ref receivedData);
                 if (!dataProcessor.CheckEndOfMessage(ref data)) {
-                    Console.WriteLine("Unexpected data from device");
+                    exceptionMessage = "Unexpected data from device";
                     continue;
                 }
 	               
                 if (!dataProcessor.CheckCheckSum(ref data)) {
-                    Console.WriteLine("checksum error");
+                    exceptionMessage = "checksum error";
                     continue;
                 }
 	               
