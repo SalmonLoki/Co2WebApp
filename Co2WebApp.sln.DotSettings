@@ -1,13 +1,6 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=136A10F88DAB7343BD82E12C383F65AF/AbsolutePath/@EntryValue">C:\Users\senya\RiderProjects\Co2tracking\Co2tracking.sln.DotSettings</s:String>
-	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=136A10F88DAB7343BD82E12C383F65AF/RelativePath/@EntryValue">..\..\Co2tracking\Co2tracking.sln.DotSettings</s:String>
-	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=136A10F88DAB7343BD82E12C383F65AF/@KeyIndexDefined">True</s:Boolean>
-	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=410F4B7135158D4498C75C3BFCDD2618/@KeyIndexDefined">True</s:Boolean>
-	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=410F4B7135158D4498C75C3BFCDD2618/AbsolutePath/@EntryValue">C:\Users\senya\Documents\Appulate-Resharper.DotSettings</s:String>
-	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=410F4B7135158D4498C75C3BFCDD2618/RelativePath/@EntryValue">..\..\..\Documents\Appulate-Resharper.DotSettings</s:String>
-	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File136A10F88DAB7343BD82E12C383F65AF/@KeyIndexDefined">True</s:Boolean>
-	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File136A10F88DAB7343BD82E12C383F65AF/IsOn/@EntryValue">False</s:Boolean>
-	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File136A10F88DAB7343BD82E12C383F65AF/RelativePriority/@EntryValue">1</s:Double>
-	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File410F4B7135158D4498C75C3BFCDD2618/@KeyIndexDefined">True</s:Boolean>
-	
-	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File410F4B7135158D4498C75C3BFCDD2618/RelativePriority/@EntryValue">2</s:Double></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=7630EA4A4C061444A7C6F0A250AF6D7B/AbsolutePath/@EntryValue">C:\Users\Ksenia.Khromova\Downloads\Microsoft.SkypeApp_kzf8qxf38zg5c!App\All\Appulate-Resharper.DotSettings</s:String>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=7630EA4A4C061444A7C6F0A250AF6D7B/RelativePath/@EntryValue">..\..\..\Downloads\Microsoft.SkypeApp_kzf8qxf38zg5c!App\All\Appulate-Resharper.DotSettings</s:String>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=7630EA4A4C061444A7C6F0A250AF6D7B/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File7630EA4A4C061444A7C6F0A250AF6D7B/@KeyIndexDefined">True</s:Boolean>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File7630EA4A4C061444A7C6F0A250AF6D7B/RelativePriority/@EntryValue">1</s:Double></wpf:ResourceDictionary>

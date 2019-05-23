@@ -16,8 +16,8 @@ namespace co2Device {
 			if (!hidDevice.TryOpen(out HidStream stream)) {
 				throw new Exception("Stream could not be created");
 			}
-			stream.ReadTimeout = 3000; //The maximum amount of time, in milliseconds, to wait for the device to send some data
-			stream.WriteTimeout = 3000; //The maximum amount of time, in milliseconds, to wait for the device to receive the data.
+			stream.ReadTimeout = 3000;
+			stream.WriteTimeout = 3000;
 			return stream;
 		} 
 

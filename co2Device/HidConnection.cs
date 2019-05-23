@@ -3,7 +3,7 @@ using System.Linq;
 using HidSharp;
 
 namespace co2Device {
-    public class UsbConnection {
+    public class HidConnection {
         private HidDevice _hidDevice;
         private HidStream _stream;
         private byte[] _key = { 0xc4, 0xc6, 0xc0, 0x92, 0x40, 0x23, 0xdc, 0x96 };
