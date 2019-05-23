@@ -9,8 +9,8 @@ namespace co2Device {
         private byte[] _key = { 0xc4, 0xc6, 0xc0, 0x92, 0x40, 0x23, 0xdc, 0x96 };
         
         public void ConnectDevice(ICo2DeviceHandler co2DeviceHandler, IDataProcessor dataProcessor,
-            int vendorId, int productId,
-            ref Result co2Result, ref Result temperatureResult) {
+                                  int vendorId, int productId,
+                                  ref Result co2Result, ref Result temperatureResult) {
             _hidDevice = co2DeviceHandler.ConnectDevice(vendorId, productId);
             _stream = co2DeviceHandler.OpenStream(_hidDevice);
 					
@@ -25,17 +25,17 @@ namespace co2Device {
 
                 if (receivedData.Length == 0) {
                     Console.WriteLine("Unable to read data");
+                    continue;
                 }
                 
                 if (receivedData.Length != 9 && receivedData.Length != 8) {
                     Console.WriteLine("transferred amount of bytes != expected bytes amount: " + receivedData.Length);
+                    continue;
                 }
 
-                if (receivedData.Length == 9)
-                {
-                    var temp = new byte[] {0, 0, 0, 0, 0, 0, 0, 0};
-                    for (var i = 0; i < 8; i++)
-                    {
+                if (receivedData.Length == 9) {
+                    var temp = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+                    for (var i = 0; i < 8; i++) {
                         temp[i] = receivedData[i + 1];
                     }
 
@@ -45,10 +45,12 @@ namespace co2Device {
                 int[] data = dataProcessor.DecryptData(ref _key, ref receivedData);
                 if (!dataProcessor.CheckEndOfMessage(ref data)) {
                     Console.WriteLine("Unexpected data from device");
+                    continue;
                 }
 	               
                 if (!dataProcessor.CheckCheckSum(ref data)) {
                     Console.WriteLine("checksum error");
+                    continue;
                 }
 	               
                 Result result = dataProcessor.DataProcessing(ref data);
@@ -57,6 +59,8 @@ namespace co2Device {
                         co2Result = result;
                     if (result.Type.Equals("Ambient Temperature"))
                         temperatureResult = result;
+                } else {
+                    continue;
                 }
 
                 if (co2Result != null & temperatureResult != null)

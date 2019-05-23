@@ -9,7 +9,10 @@ namespace Co2WebApp {
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://*:5000")
+                   //.UseUrls("http://localhost:5000")
+                   //192.168.31.113
+                   //.UseUrls("192.168.31.113")
+                   .UseUrls("https://*:5001;http://*:5000")
                    .UseStartup<Startup>();
     }
 }
