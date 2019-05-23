@@ -24,12 +24,16 @@ namespace Co2WebApp.Middleware {
 		public async Task Invoke(HttpContext httpContext) {
 			if (httpContext.Request.Path.Value.ToLower() == "/co2") {
 				if (!_cache.TryGetValue(CacheKeys.Co2Result, out Result co2Result) | !_cache.TryGetValue(CacheKeys.TemperatureResult, out Result temperatureResult)) {
+					#region defaultValues
+
+					co2Result = new Result("Relative Concentration of CO2", 1000, DateTime.Now.ToLongTimeString());
+					temperatureResult = new Result("Ambient Temperature", 25, DateTime.Now.ToLongTimeString());
+
+					#endregion
+					
 					var hidConnection = new HidConnection();
 					hidConnection.ConnectDevice(_co2DeviceHandler, _dataProcessor, VendorId, ProductId, 
 					                            ref co2Result, ref temperatureResult);
-
-					//co2Result = new Result("Relative Concentration of CO2", 1000, DateTime.Now.ToLongTimeString());
-					//temperatureResult = new Result("Ambient Temperature", 25, DateTime.Now.ToLongTimeString());
 					
 					MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
 						.SetSlidingExpiration(TimeSpan.FromSeconds(1));
