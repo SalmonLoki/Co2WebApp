@@ -6,6 +6,7 @@ namespace co2Device {
 
 		bool CheckCheckSum(ref int[] data);
 
-		Result DataProcessing(ref int[] data);
+		void DataProcessing(ref int[] data, ref int co2);
+		void DataProcessing(ref int[] data, ref double temperature);
 	}
 }

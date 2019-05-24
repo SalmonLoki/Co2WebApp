@@ -44,25 +44,19 @@ namespace co2Device {
         private double decodeTemperature(int t) {
             return Math.Round(t * 0.0625 - 273.15, 1);
         }
-				
-        private string getHeartbeat() {
-            var curTimeLong = DateTime.Now.ToLongTimeString();
-            return curTimeLong;
-        }
 
-        public Result DataProcessing(ref int[] data) {
-            var val = (data[1] << 8) | data[2];
-			
-            switch (data[0]) {
-                case 80: //0x50d		
-                    return new Result("Relative Concentration of CO2", val, getHeartbeat());
-
-                case 66: //0x42d					
-                    return new Result("Ambient Temperature", decodeTemperature(val), getHeartbeat());
-
-                default:
-                    return null;
+        public void DataProcessing(ref int[] data, ref int co2) {
+            //0x50d 
+            if (data[0] == 80) {
+                co2 = (data[1] << 8) | data[2];
             }
-        }    
+        }
+        
+        public void DataProcessing(ref int[] data, ref double temperature) {
+            //0x42d
+            if (data[0] == 66) {
+                temperature = decodeTemperature((data[1] << 8) | data[2]);
+            }
+        } 
     }
 }

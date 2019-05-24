@@ -10,14 +10,16 @@ namespace co2Device {
         
         public void ConnectDevice(ICo2DeviceHandler co2DeviceHandler, IDataProcessor dataProcessor,
                                   int vendorId, int productId,
-                                  ref Result co2Result, ref Result temperatureResult) {
+                                  ref JsonOutput output) {
+            int co2 = int.MinValue;
+            double temperature = double.NaN;
+            
             _hidDevice = co2DeviceHandler.ConnectDevice(vendorId, productId);
             _stream = co2DeviceHandler.OpenStream(_hidDevice);
 					
             //the device won't send anything before receiving this packet 
             byte[] reportId = { 0x00 };
-            byte[] request = reportId.Concat(_key).ToArray();
-						
+            byte[] request = reportId.Concat(_key).ToArray();						
             co2DeviceHandler.SendSetFeatureSetupRequest(_stream, request);
             
             var attempts = 0;
@@ -32,12 +34,12 @@ namespace co2Device {
                 byte[] receivedData = co2DeviceHandler.ReadData(_stream);
 
                 if (receivedData.Length == 0) {
-                    exceptionMessage = "Unable to read data";
+                    exceptionMessage = "unable to read data";
                     continue;
                 }
                 
-                if (receivedData.Length != 9 && receivedData.Length != 8) {
-                    exceptionMessage = "transferred amount of bytes != expected bytes amount: " + receivedData.Length;
+                if (receivedData.Length != 8 && receivedData.Length != 9) {
+                    exceptionMessage = "transferred amount of bytes (" + receivedData.Length + ") != expected bytes amount (8 or 9)";
                     continue;
                 }
 
@@ -46,13 +48,12 @@ namespace co2Device {
                     for (var i = 0; i < 8; i++) {
                         temp[i] = receivedData[i + 1];
                     }
-
                     receivedData = temp;
                 }
 
                 int[] data = dataProcessor.DecryptData(ref _key, ref receivedData);
                 if (!dataProcessor.CheckEndOfMessage(ref data)) {
-                    exceptionMessage = "Unexpected data from device";
+                    exceptionMessage = "unexpected data from device";
                     continue;
                 }
 	               
@@ -61,18 +62,13 @@ namespace co2Device {
                     continue;
                 }
 	               
-                Result result = dataProcessor.DataProcessing(ref data);
-                if (result != null) {
-                    if (result.Type.Equals("Relative Concentration of CO2"))
-                        co2Result = result;
-                    if (result.Type.Equals("Ambient Temperature"))
-                        temperatureResult = result;
-                } else {
-                    continue;
-                }
+                dataProcessor.DataProcessing(ref data, ref co2);
+                dataProcessor.DataProcessing(ref data, ref temperature);
 
-                if (co2Result != null & temperatureResult != null)
+                if (co2 != int.MinValue && !temperature.Equals(double.NaN)) {
+                    output = new JsonOutput(co2, temperature, DateTime.Now.ToString("g"));
                     break;
+                }                   
             }				
             co2DeviceHandler.CloseStream(_stream);
         }
