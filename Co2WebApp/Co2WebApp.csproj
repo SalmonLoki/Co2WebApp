@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\co2Device\co2Device.csproj" />
+      <ProjectReference Include="..\LightController\LightController.csproj" />
     </ItemGroup>
 
 </Project>

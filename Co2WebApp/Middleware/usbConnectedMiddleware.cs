@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using co2Device;
+using LightController;
 using Newtonsoft.Json;
 
 namespace Co2WebApp.Middleware {
@@ -42,6 +43,10 @@ namespace Co2WebApp.Middleware {
 								
 				httpContext.Response.ContentType = "application/json";
 				string jsonString = JsonConvert.SerializeObject(jsonOutput);
+				
+				var lightConnection = new Connection();
+				lightConnection.sendSignalToLightConroller(jsonOutput.co2, jsonOutput.temperature);
+				
 				await httpContext.Response.WriteAsync(jsonString);
 			} else {
 				await _next.Invoke(httpContext);
