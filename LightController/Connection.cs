@@ -15,7 +15,7 @@ namespace LightController {
 			}	
 		}		
 
-		public async void sendSignalToLightConroller(int co2, double temperature) {
+		public void sendSignalToLightConroller(int co2, double temperature) {
 			if (co2 >= 900) {
 				put(UrlLightON);
 			}	
