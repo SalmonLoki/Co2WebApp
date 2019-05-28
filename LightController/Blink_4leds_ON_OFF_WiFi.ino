@@ -1,17 +1,19 @@
 #include "ESP8266WiFi.h"
+#include "ESP8266HTTPClient.h"
 
 const char* ssid = "toki";
 const char* password = "bananana";
 
-//they should be diff
-int main_led = 2 ; //D4
-int green_led = 16; //D0 GPIO16
-int yellow_led = 5; //D1 GPIO5
-int red_led = 4; //D2 GPIO4
+int main_led = 16; //D0 GPIO16
+int green_led = 5; //D1 GPIO5
+int yellow_led = 4; //D2 GPIO4
+int red_led = 2 ; //D4 GPIO2
+
 int light;
 char* state;
 
 WiFiServer server(80);
+String request;
 
 void setup() {
   Serial.begin(115200);
@@ -45,64 +47,82 @@ void setup() {
 
 void loop() {
   WiFiClient client = server.available();
-  if (!client){
-    return;
-  }
+  if (client){
+    Serial.println("New client");
+    String currentLine = "";
+    while (client.connected()) {
+      if (client.available()) {
+        char c = client.read();
+        request += c;
+        Serial.write(c);
+        if (c == '\n') {
+          if (currentLine.length() == 0) {
+            if (request.indexOf("/light/on") != -1){
+              digitalWrite(main_led, LOW);
+              light = 1;
+            }
+  
+            if (request.indexOf("/light/off") != -1){
+              digitalWrite(main_led, HIGH);
+              light = 0;
+            }
 
-  while (!client.available()){
-    delay(1);
-  }
+            if (request.indexOf("/state/green") != -1){
+              digitalWrite(yellow_led, HIGH);
+              digitalWrite(red_led, HIGH);
+              digitalWrite(green_led, LOW);
+              state = "GREEN";
+            }
+            if (request.indexOf("/state/yellow") != -1){
+              digitalWrite(green_led, HIGH);
+              digitalWrite(red_led, HIGH);
+              digitalWrite(yellow_led, LOW);
+              state = "YELLOW";
+            }
+            if (request.indexOf("/state/red") != -1){
+              digitalWrite(green_led, HIGH);
+              digitalWrite(yellow_led, HIGH);
+              digitalWrite(red_led, LOW);
+              state = "RED";
+            }
+            if (request.indexOf("/state/off") != -1){
+              digitalWrite(green_led, HIGH);
+              digitalWrite(yellow_led, HIGH);
+              digitalWrite(red_led, HIGH);
+              state = "";
+            }  
+            client.println("HTTP/1.1 200 OK");
+            client.println("Content-type:application/json");
+            client.println("Connection: close");
+            client.println();
+            client.println("[");
+            client.println("  {");
+            client.print("    \"main led\": ");                        
+            if (light == 1){
+              client.println("\"ON\",");
+            } else {
+              client.println("\"OFF\",");
+            }
+            client.print("    \"state\": ");
+            client.print("\"");
+            client.print(state);
+            client.println("\"");
+            client.println("  }");
+            client.println("]");           
+            client.println();
+            break;
+          } else {
+            currentLine = "";
+          }
+        } else if (c != '\r') {
+          currentLine += c;
+        }
+      }
+    }
 
-  String request = client.readStringUntil('\r');
-  Serial.print("request: ");
-  Serial.println(request);
-  client.flush();
-
-  if (request.indexOf("/light/on") != -1){
-    digitalWrite(main_led, LOW);
-    light = 1;
+    request = "";
+    client.stop();
+    Serial.println("Client disconnected.");
+    Serial.println("");
   }
-  
-  if (request.indexOf("/light/off") != -1){
-    digitalWrite(main_led, HIGH);
-    light = 0;
-  }
-
-  if (request.indexOf("/state/green") != -1){
-    digitalWrite(yellow_led, HIGH);
-    digitalWrite(red_led, HIGH);
-    digitalWrite(green_led, LOW);
-    state = "GREEN";
-  }
-  if (request.indexOf("/state/yellow") != -1){
-    digitalWrite(green_led, HIGH);
-    digitalWrite(red_led, HIGH);
-    digitalWrite(yellow_led, LOW);
-    state = "YELLOW";
-  }
-  if (request.indexOf("/state/red") != -1){
-    digitalWrite(green_led, HIGH);
-    digitalWrite(yellow_led, HIGH);
-    digitalWrite(red_led, LOW);
-    state = "RED";
-  }
-  if (request.indexOf("/state/off") != -1){
-    digitalWrite(green_led, HIGH);
-    digitalWrite(yellow_led, HIGH);
-    digitalWrite(red_led, HIGH);
-    state = "";
-  }
-  
-  // Return the response 
-  
-  
-  if(light == 1) {
-    client.println("main led is ON");
-  } else {
-    client.println("main led is OFF");
-  }
-  client.print("colour state: ");
-  client.println(state);
-  
-  delay(1);
 }
